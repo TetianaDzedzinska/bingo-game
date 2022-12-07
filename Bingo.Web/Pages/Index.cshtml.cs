@@ -6,33 +6,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Bingo.Web.Models;
+using Microsoft.Extensions.Options;
+using Bingo.Domain.Services.Interfaces;
 
 namespace Bingo.Web.Pages
 {
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        public Board Board { get; set; }
+        private readonly IGameService _gameService;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        private readonly GameSettingsOptions _gameSettings;
+        public BoardView Board { get; set; }
+
+        public IndexModel(ILogger<IndexModel> logger, IGameService gameService, IOptions<GameSettingsOptions> gameSettings)
         {
             _logger = logger;
+            _gameSettings = gameSettings.Value;
+            _gameService = gameService;
         }
 
         public void OnGet()
         {
-            Board = new Board()
+            //todo: move to program
+            //var game = _gameService.CreateGame();
+            //_gameService.AddPlayer(game);
+            Domain.Models.Board board = _gameService.GenerateBoard(_gameSettings.BoardSize, _gameSettings.MaxNumber);
+
+
+            Board = new BoardView()
             {
                 PlayerName = "Player 1 SuperMan",
-                Settings = (5, 5),
-                Cells = new Cell[5, 5]
-                {
-                    { new Cell(18), new Cell(5){IsSelected = true}, new Cell(25), new Cell(11), new Cell(7){IsSelected = true} },
-                    { new Cell(6), new Cell(22), new Cell(25), new Cell(41), new Cell(7){IsSelected = true} },
-                    { new Cell(45), new Cell(35), new Cell(25), new Cell(37), new Cell(27)},
-                    { new Cell(20){IsSelected = true}, new Cell(51){IsSelected = true}, new Cell(25), new Cell(11), new Cell(33) },
-                    { new Cell(1), new Cell(15), new Cell(10), new Cell(9), new Cell(43){IsSelected = true} }
-                }
+                Settings = (_gameSettings.BoardSize, _gameSettings.BoardSize),
+                Cells = board.Cells.MapToCellView()
             };
         }
     }

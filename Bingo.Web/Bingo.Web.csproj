@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BingoGame\Bingo.Domain.Models\Bingo.Domain.Models.csproj" />
+    <ProjectReference Include="..\BingoGame\Bingo.Domain.Services\Bingo.Domain.Services.csproj" />
+  </ItemGroup>
+
 </Project>
