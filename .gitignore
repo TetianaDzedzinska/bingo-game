@@ -16,3 +16,4 @@ bin
 /node_modules/
 /.idea/
 /Bingo.Web/bin/Debug/netcoreapp3.1
+*.vs
