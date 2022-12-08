@@ -3,28 +3,53 @@ using System.Collections.Generic;
 
 namespace Bingo.Domain.Models
 {
+    //used Singleton Pattern with Lazy approach to guarantee only one Game instance per application
     public class Game
     {
-        public int Id { get; set; }
+        public Guid Id { get; }
+        public Player Player { get; private set; }
+        public GameStatus Status { get; private set; }
+        public List<int> AlreadyPlayedNumbers { get; } = new List<int>();
+        public int MaxNumber { get; }
 
-        public Player Player { get; set; }
+        private static Lazy<Game> Lazy(GameSettings settings) => new Lazy<Game>(() =>
+        {
+            Instance = new Game(settings);
+            return Instance;
+        });
+        public static Game CreateGame(GameSettings settings) => Lazy(settings).Value;
+        public static Game Instance { get; private set; }
 
-        public GameStatus GameStatus { get; set; }
+        private Game(GameSettings settings)
+        {
+            Id = Guid.NewGuid();
+            MaxNumber = settings.MaxNumber;
+            Status = GameStatus.Started;
+        }
 
-        public List<int> PlayedNumbers { get; private set; }
+        public void SetPlayer(Player player)
+        {
+            Player = player;
+            Status = GameStatus.Running;
+        }
 
-        public int GetNextNumber(int maxNumber)
+        public int PlayNextNumber()
         {
             var rnd = new Random();
             int number;
             do
             {
-                number = rnd.Next(1, maxNumber + 1);
-            } while (PlayedNumbers.Contains(number));
+                number = rnd.Next(1, MaxNumber + 1);
+            } while (AlreadyPlayedNumbers.Contains(number));
 
-            PlayedNumbers.Add(number);
+            AlreadyPlayedNumbers.Add(number);
 
             return number;
+        }
+
+        public void EndGame()
+        {
+            Status = GameStatus.End;
         }
     }
 }

@@ -4,10 +4,9 @@ namespace Bingo.Domain.Services.Interfaces
 {
     public interface IGameService
     {
-        public Game CreateGame();
+        public Game StartGame(GameSettings settings);
+        public void AddPlayer(string playerName, GameSettings settings);
 
-        public Board GenerateBoard(int boardSize, int maxNumber);
-
-        public int NextStep(Game game, int maxNumber);
+        public int NextStep(Game game);
     }
 }

@@ -7,9 +7,12 @@ FileContentIndex
 /obj/
 /bin/
 */bin/
+obj
+bin
 */obj/
 /bin/
 /obj/
 /dist/
 /node_modules/
 /.idea/
+/Bingo.Web/bin/Debug/netcoreapp3.1

@@ -1,51 +1,48 @@
-﻿using Bingo.Domain.Models;
+﻿using System;
+using Bingo.Domain.Models;
 using Bingo.Domain.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Bingo.Domain.Services
 {
     public class GameService : IGameService
     {
         private readonly IBoardService _boardService;
-        public Game CreateGame()
+
+        public GameService(IBoardService boardService)
         {
-            throw new NotImplementedException();
+            _boardService = boardService;
         }
 
-        public Board GenerateBoard(int boardSize, int maxNumber)
+        public Game StartGame(GameSettings settings)
         {
-            var board = new Board()
+           return Game.CreateGame(settings);
+        }
+
+        public void AddPlayer(string playerName, GameSettings settings)
+        {
+            Game.Instance.SetPlayer(new Player
             {
-                Cells = new Cell[boardSize, boardSize],
-                Settings = (boardSize, boardSize)
-            };
-
-            var rnd = new Random();
-            var usedNumber = new List<int>(boardSize * boardSize);
-
-            for (int i = 0; i < boardSize; i++)
-                for (int j = 0; j < boardSize; j++)
-                {
-                    int number;
-                    do
-                    {
-                        number = rnd.Next(1, maxNumber + 1);
-                    } while (usedNumber.Contains(number));
-
-                    usedNumber.Add(number);
-                    board.Cells[i, j] = new Cell(number, false);
-                }
-
-            return board;
+                Id = Guid.NewGuid(),
+                Name = playerName,
+                Board = _boardService.GenerateBoard(settings)
+            });
         }
 
-        public int NextStep(Game game, int maxNumber)
+        public int NextStep(Game game)
         {
-            int nextNumber = game.GetNextNumber(maxNumber);
-            //todo: check number present at board
-            var isWinner = _boardService.HasBoardWin(game.Player.Board, game.PlayedNumbers);
+            if(game.Status != GameStatus.Running)
+            {
+                return -1;
+            }
+
+            var nextNumber = game.PlayNextNumber();
+
+            game.Player.Board.FindNumber(nextNumber);
+
+            if (game.Player.Board.IsWin)
+            {
+                game.EndGame();
+            }
 
             return nextNumber;
         }

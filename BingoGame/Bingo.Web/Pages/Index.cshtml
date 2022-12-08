@@ -1,0 +1,46 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h1>Player name: @Model.Player.Name </h1>
+
+    @if (!@Model.Board.IsWin)
+    {
+        <form asp-page-handler="NextNumber" method="post">
+            <button class="button"> Get Next Mumber </button>
+        </form>
+    }
+
+    @if (@ViewData["SelectedNumber"] != null)
+    {
+        <h3 style="color:green">Selected number: @ViewData["SelectedNumber"]</h3>
+    }
+
+    @if (Model.Board.IsWin)
+    {
+        <h2 style="color:red;"><b>BINGO!!!</b></h2>
+    }
+    
+    <table class="grid center">
+        <tbody>
+            
+        @for (int i = 0; i < Model.Board.Settings.Rows; i++)
+        {
+            <tr>
+                @for (int j = 0; j < Model.Board.Settings.Cols; j++)
+                {
+                    var cell = Model.Board.Cells[i,j];
+                        string style = cell.IsWin ? "background-color:red" : (cell.IsMarked ? "background-color:green" : null);
+                    <td style="@style" class="box">
+                        @Model.Board.Cells[i,j].Value
+                    </td>
+                }
+            </tr>
+        }        
+        </tbody>
+    </table>  
+
+</div>

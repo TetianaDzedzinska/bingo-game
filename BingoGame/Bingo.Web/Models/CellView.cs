@@ -1,17 +1,16 @@
-﻿namespace Bingo.Domain.Models
+﻿namespace Bingo.Web.Models
 {
-    public class Cell
+    public class CellView
     {
         public int Value { get; set; }
-
         public bool IsMarked { get; set; }
-
         public bool IsWin { get; set; }
 
-        public Cell(int value, bool isMarked)
+        public CellView(int value)
         {
             Value = value;
-            IsMarked = isMarked;
+            IsMarked = false;
+            IsWin = false;
         }
     }
 }
