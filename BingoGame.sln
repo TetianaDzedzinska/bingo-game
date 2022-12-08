@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bingo.Domain.Services", "Bi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{6C285752-71A5-476C-8E62-8743C26839D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.Domain.Service.Tests", "Bingo.Domain.Service.Tests\Bingo.Domain.Service.Tests.csproj", "{0F62F0F7-5D8B-42A6-BC72-A3BAF99D009A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.Domain.Service.Tests", "BingoGame\UnitTests\Bingo.Domain.Service.Tests\Bingo.Domain.Service.Tests.csproj", "{0F62F0F7-5D8B-42A6-BC72-A3BAF99D009A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
