@@ -17,7 +17,7 @@ namespace Bingo.Web
             var gameService = webHost.Services.GetService<IGameService>();
             var settings = webHost.Services.GetService<IOptions<GameSettings>>();
             gameService.StartGame(settings.Value);
-            gameService.AddPlayer("Test superman", settings.Value);
+            gameService.AddPlayer("PlayerName", settings.Value);
 
             webHost.Run();
         }
